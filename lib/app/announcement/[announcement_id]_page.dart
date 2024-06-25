@@ -7,6 +7,7 @@ import 'package:imoveis_app/widgets/buttons/button_primary.dart';
 import 'package:imoveis_app/widgets/real_estate_wrapper.dart';
 import 'package:imoveis_app/widgets/realtor_wrapper.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AnnouncementViewPage extends StatefulWidget {
@@ -92,7 +93,11 @@ class _AnnouncementViewPageState extends State<AnnouncementViewPage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.share_outlined)),
+          IconButton(
+              onPressed: () {
+                Share.share('Veja este imóvel incrível! Confira mais detalhes e fotos aqui: https://imoveis.portalcatalao.com.br/imovel/${announcement.id}');
+              },
+              icon: const Icon(Icons.share_outlined)),
           IconButton(
               onPressed: () {}, icon: const Icon(Icons.favorite_outline)),
         ],
@@ -117,7 +122,8 @@ class _AnnouncementViewPageState extends State<AnnouncementViewPage> {
                   .map((item) => Container(
                         child: Center(
                           child: Image.network(
-                            'https://api.imoveis.portalcatalao.com.br/$item',
+                            item.startsWith('storage') ?
+                            'https://api.imoveis.portalcatalao.com.br/$item' : item,
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: 248,

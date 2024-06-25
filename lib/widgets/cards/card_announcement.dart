@@ -42,7 +42,7 @@ class CardAnnouncement extends StatelessWidget {
                     height: 228,
                     child: announcement.thumbnail != null
                         ? Image.network(
-                            'https://api.imoveis.portalcatalao.com.br/${announcement.thumbnail!}',
+                            announcement.thumbnail!.startsWith('storage') ? 'https://api.imoveis.portalcatalao.com.br/${announcement.thumbnail!}' : announcement.thumbnail!,
                             fit: BoxFit.cover,
                           )
                         : null,
@@ -105,6 +105,8 @@ class CardAnnouncement extends StatelessWidget {
                     ),
                     Text(
                       announcement.getFullTitle(),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
