@@ -4,6 +4,7 @@ import 'package:imoveis_app/models/address.dart';
 import 'package:imoveis_app/models/property_type.dart';
 import 'package:imoveis_app/repositories/address_repository.dart';
 import 'package:imoveis_app/services/api_service.dart';
+import 'package:imoveis_app/widgets/buttons/button_primary.dart';
 import 'package:imoveis_app/widgets/form_components/select_city.dart';
 import 'package:imoveis_app/widgets/form_components/select_district.dart';
 import 'package:imoveis_app/widgets/form_components/select_state.dart';
@@ -81,7 +82,7 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
             controller: _tabController,
             tabs: const [
               Tab(
-                text: 'Comprar',
+                text: 'Vender',
               ),
               Tab(
                 text: 'Alugar',
@@ -350,16 +351,165 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
               decoration: const InputDecoration(
                 alignLabelWithHint: true,
                 label: Text('Complemento'),
-                hintText: 'Insira a complamento do imóvel',
+                hintText: 'Insira o complamento do imóvel',
                 hintStyle: TextStyle(fontWeight: FontWeight.w300),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
               ),
             ),
+            const SizedBox(
+              height: 12,
+            ),
+            Divider(
+              color: Colors.grey[200],
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            /* Seção de endereço */
+            const Text(
+              'Descrição do imóvel',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            TextFormField(
+              controller: _announcementFactory.addressFactory.complement,
+              maxLines: 3,
+              decoration: const InputDecoration(
+                alignLabelWithHint: true,
+                label: Text('Breve descrição'),
+                hintText: 'Insira o complamento do imóvel',
+                hintStyle: TextStyle(fontWeight: FontWeight.w300),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            TextFormField(
+              controller: _announcementFactory.addressFactory.complement,
+              maxLines: 3,
+              decoration: const InputDecoration(
+                alignLabelWithHint: true,
+                label: Text('Observações do imóvel'),
+                hintText: 'Insira o complamento do imóvel',
+                hintStyle: TextStyle(fontWeight: FontWeight.w300),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _announcementFactory.addressFactory.number,
+                    decoration: const InputDecoration(
+                      label: Text('Nº da chave'),
+                      hintText: 'Insira a rua do imóvel',
+                      hintStyle: TextStyle(fontWeight: FontWeight.w300),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: TextFormField(
+                    controller: _announcementFactory.addressFactory.zipcode,
+                    decoration: const InputDecoration(
+                      label: Text('Comissão'),
+                      hintText: 'Insira o CEP do imóvel',
+                      hintStyle: TextStyle(fontWeight: FontWeight.w300),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _announcementFactory.addressFactory.number,
+                    decoration: const InputDecoration(
+                      label: Text('Nº da chave'),
+                      hintText: 'Insira a rua do imóvel',
+                      hintStyle: TextStyle(fontWeight: FontWeight.w300),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: IconButton.filled(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      shape: WidgetStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Divider(
+              color: Colors.grey[200],
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            /* Seção de endereço */
+            const Text(
+              'Galeria do imóvel',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Divider(
+              color: Colors.grey[200],
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            /* Seção de endereço */
+            const Text(
+              'Adicionais',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
           ],
         ),
       ),
+      bottomNavigationBar: BottomAppBar(child: ButtonPrimary(title: 'Salvar imóvel', onPressed: () {},),),
     );
   }
 }
