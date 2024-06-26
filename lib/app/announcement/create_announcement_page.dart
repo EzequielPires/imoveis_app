@@ -5,10 +5,13 @@ import 'package:imoveis_app/models/property_type.dart';
 import 'package:imoveis_app/repositories/address_repository.dart';
 import 'package:imoveis_app/services/api_service.dart';
 import 'package:imoveis_app/widgets/buttons/button_primary.dart';
+import 'package:imoveis_app/widgets/cards/card_custom_file.dart';
 import 'package:imoveis_app/widgets/form_components/select_city.dart';
 import 'package:imoveis_app/widgets/form_components/select_district.dart';
 import 'package:imoveis_app/widgets/form_components/select_state.dart';
 import 'package:imoveis_app/widgets/form_components/select_type.dart';
+import 'package:imoveis_app/widgets/image_picker.dart';
+import 'package:imoveis_app/widgets/multimage_picker.dart';
 
 class CreateAnnouncementPage extends StatefulWidget {
   const CreateAnnouncementPage({super.key});
@@ -495,6 +498,26 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
             const SizedBox(
               height: 12,
             ),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: _announcementFactory.files
+                  .map((element) => CardCustomFile(customFile: element))
+                  .toList(),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            MultimagePicker(
+              onImageSelected: (file) {
+                setState(() {
+                  _announcementFactory.files.addAll(file);
+                });
+              },
+            ),
+            const SizedBox(
+              height: 12,
+            ),
             Divider(
               color: Colors.grey[200],
             ),
@@ -509,7 +532,12 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(child: ButtonPrimary(title: 'Salvar imóvel', onPressed: () {},),),
+      bottomNavigationBar: BottomAppBar(
+        child: ButtonPrimary(
+          title: 'Salvar imóvel',
+          onPressed: () {},
+        ),
+      ),
     );
   }
 }
