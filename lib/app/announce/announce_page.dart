@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imoveis_app/app/announcement/create_announcement_page.dart';
 import 'package:imoveis_app/widgets/buttons/button_primary.dart';
 
 class AnnouncePage extends StatefulWidget {
@@ -58,14 +59,20 @@ class _AnnouncePageState extends State<AnnouncePage> {
             ),
             ButtonPrimary(
               title: 'Anuncie',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateAnnouncementPage(),
+                    ));
+              },
             ),
             const SizedBox(
               height: 16,
             ),
             TextButton(
               onPressed: () {},
-              child: const Text('Proprietário: gerencie seu anúncio'),
+              child: const Text('Área da imobiliária'),
             ),
           ],
         ),
