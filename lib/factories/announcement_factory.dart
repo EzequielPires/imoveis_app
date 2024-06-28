@@ -19,6 +19,23 @@ class AnnouncementFactory {
   AddressFactory addressFactory = AddressFactory();
   List<CustomFile> files = [];
 
+  bool allowPets = false;
+  bool hasPool = false;
+  bool hasSolarEnergy = false;
+  bool hasSecuritySystem = false;
+  bool hasElectricFence = false;
+  bool hasBarbecue = false;
+  bool hasConcertina = false;
+  bool hasCourt = false;
+  bool hasSoccerField = false;
+  bool hasGym = false;
+  bool isRegistered = false;
+  bool isFurnished = false;
+  bool isFeatured = false;
+  bool isRoof = false;
+  bool isDeedRegistered = false;
+  bool showAddress = true;
+
   changeType(PropertyType typeData) {
     type = type;
     typeController.text = typeData.name;
