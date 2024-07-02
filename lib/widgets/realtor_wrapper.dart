@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:imoveis_app/models/announcement.dart';
+import 'package:imoveis_app/models/user.dart';
 
 class RealtorWrapper extends StatelessWidget {
   final User realtor;

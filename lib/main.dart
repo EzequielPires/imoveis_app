@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:imoveis_app/app/splash_page.dart';
+import 'package:imoveis_app/controllers/authentication_controller.dart';
 import 'package:imoveis_app/controllers/filter_announcements_controller.dart';
-import 'package:imoveis_app/routes.g.dart';
 import 'package:provider/provider.dart';
-import 'package:routefly/routefly.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => AuthenticationController(),
+        ),
         ChangeNotifierProvider(
           create: (context) => FilterAnnouncementsController(),
         ),
@@ -22,7 +25,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -31,9 +34,7 @@ class MyApp extends StatelessWidget {
               surfaceTintColor: Colors.white, color: Colors.white),
           useMaterial3: true,
           scaffoldBackgroundColor: Colors.grey.shade100),
-      routerConfig: Routefly.routerConfig(
-        routes: routes, // GENERATED
-      ),
+      home: const SplashPage(),
     );
   }
 }

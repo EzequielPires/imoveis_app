@@ -1,57 +1,7 @@
 import 'package:imoveis_app/models/address.dart';
 import 'package:imoveis_app/models/property_type.dart';
-
-class User {
-  String? id;
-  String? name;
-  String? avatar;
-  String? email;
-  String? cellPhone;
-
-  User({
-    this.id,
-    this.name,
-    this.email,
-    this.cellPhone,
-    this.avatar
-  });
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
-      cellPhone: json['cell_phone'],
-      avatar: json['avatar'],
-    );
-  }
-}
-
-class RealEstate {
-  String? id;
-  String? name;
-  String? logo;
-  String? email;
-  String? cellPhone;
-
-  RealEstate({
-    this.id,
-    this.name,
-    this.email,
-    this.logo,
-    this.cellPhone,
-  });
-
-  factory RealEstate.fromJson(Map<String, dynamic> json) {
-    return RealEstate(
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
-      logo: json['logo'],
-      cellPhone: json['cellPhone'],
-    );
-  }
-}
+import 'package:imoveis_app/models/real_estate.dart';
+import 'package:imoveis_app/models/user.dart';
 
 class Announcement {
   String? id;
