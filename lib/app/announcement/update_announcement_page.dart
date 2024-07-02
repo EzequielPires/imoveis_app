@@ -5,18 +5,29 @@ import 'package:imoveis_app/app/announcement/components/description_section.dart
 import 'package:imoveis_app/app/announcement/components/details_section.dart';
 import 'package:imoveis_app/app/announcement/components/gallery_section.dart';
 import 'package:imoveis_app/factories/announcement_factory.dart';
+import 'package:imoveis_app/models/address.dart';
+import 'package:imoveis_app/models/announcement.dart';
 import 'package:imoveis_app/models/property_type.dart';
+import 'package:imoveis_app/repositories/address_repository.dart';
+import 'package:imoveis_app/services/api_service.dart';
 import 'package:imoveis_app/widgets/buttons/button_primary.dart';
+import 'package:imoveis_app/widgets/cards/card_custom_file.dart';
+import 'package:imoveis_app/widgets/form_components/count_field.dart';
+import 'package:imoveis_app/widgets/form_components/select_city.dart';
+import 'package:imoveis_app/widgets/form_components/select_district.dart';
+import 'package:imoveis_app/widgets/form_components/select_state.dart';
 import 'package:imoveis_app/widgets/form_components/select_type.dart';
+import 'package:imoveis_app/widgets/multimage_picker.dart';
 
-class CreateAnnouncementPage extends StatefulWidget {
-  const CreateAnnouncementPage({super.key});
+class UpdateAnnouncementPage extends StatefulWidget {
+  final Announcement announcement;
+  const UpdateAnnouncementPage({super.key, required this.announcement});
 
   @override
-  State<CreateAnnouncementPage> createState() => _CreateAnnouncementPageState();
+  State<UpdateAnnouncementPage> createState() => _UpdateAnnouncementPageState();
 }
 
-class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
+class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
   final AnnouncementFactory _announcementFactory = AnnouncementFactory();
@@ -24,6 +35,7 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+    _announcementFactory.hydrate(widget.announcement);
     super.initState();
   }
 

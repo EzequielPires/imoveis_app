@@ -92,6 +92,8 @@ class _AnnouncementViewPageState extends State<AnnouncementViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         actions: [
           IconButton(
               onPressed: () {

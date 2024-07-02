@@ -12,11 +12,14 @@ class CardCustomFile extends StatelessWidget {
       child: customFile.file != null
           ? Image.file(
               customFile.file!,
-              width: (MediaQuery.of(context).size.width - 56) / 3,
-              height: (MediaQuery.of(context).size.width - 56) / 3,
+              width: (MediaQuery.of(context).size.width - 64) / 3,
+              height: (MediaQuery.of(context).size.width - 64) / 3,
               fit: BoxFit.cover,
             )
           : Image.network(
+              width: (MediaQuery.of(context).size.width - 64) / 3,
+              height: (MediaQuery.of(context).size.width - 64) / 3,
+              fit: BoxFit.cover,
               customFile.toString(),
             ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:imoveis_app/app/splash_page.dart';
 import 'package:imoveis_app/controllers/authentication_controller.dart';
 import 'package:imoveis_app/controllers/filter_announcements_controller.dart';
+import 'package:imoveis_app/controllers/menu_app_controller.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -10,6 +11,9 @@ void main() {
       providers: [
         ChangeNotifierProvider(
           create: (context) => AuthenticationController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MenuAppController(),
         ),
         ChangeNotifierProvider(
           create: (context) => FilterAnnouncementsController(),

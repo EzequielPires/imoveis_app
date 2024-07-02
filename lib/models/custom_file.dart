@@ -8,6 +8,6 @@ class CustomFile {
 
   @override
   String toString() {
-    return file != null ? file!.path : 'https://api.imoveis.portalcatalao.com.br/${url!}';
+    return file != null ? file!.path : url.toString().startsWith('http') ? url.toString() : 'https://api.imoveis.portalcatalao.com.br/${url!}';
   }
 }
