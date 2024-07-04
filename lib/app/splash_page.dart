@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:imoveis_app/app/app_page.dart';
 import 'package:imoveis_app/app/signin/signin_page.dart';
+import 'package:imoveis_app/app_dashboard/dashboard_page.dart';
 import 'package:imoveis_app/controllers/authentication_controller.dart';
 import 'package:imoveis_app/models/user.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +24,16 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   handleRoute(UserState userState, User? user) {
-    if (userState == UserState.logged) {
+    if (userState == UserState.loggedInRealEstate) {
+      if (_authenticationController.realEstate != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const DashboardPage(),
+          ),
+        );
+      }
+    } else if (userState == UserState.logged) {
       if (user != null) {
         Navigator.pushReplacement(
           context,
@@ -51,9 +61,15 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   @override
+  void dispose() {
+    _authenticationController.removeListener(authListene);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Image.asset('assets/logo.png')),
+      body: Center(child: Image.asset('assets/logo.png', width: 200,)),
     );
   }
 }

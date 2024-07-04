@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:imoveis_app/app/announcement/create_announcement_page.dart';
+import 'package:imoveis_app/controllers/authentication_controller.dart';
 import 'package:imoveis_app/models/announcement.dart';
 import 'package:imoveis_app/repositories/announcements_repository.dart';
 import 'package:imoveis_app/widgets/cards/card_announcement_dashboard.dart';
+import 'package:provider/provider.dart';
 
 class PropertiesPage extends StatefulWidget {
   const PropertiesPage({super.key});
@@ -12,6 +14,7 @@ class PropertiesPage extends StatefulWidget {
 }
 
 class _PropertiesPageState extends State<PropertiesPage> {
+  late AuthenticationController _controller;
   final AnnouncementsRepository _repository = AnnouncementsRepository();
   List<Announcement> announcements = [];
   bool isLoading = true;
@@ -22,7 +25,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
         isLoading = true;
       });
 
-      var res = await _repository.find(null);
+      var res = await _repository.find(QueryAnnouncement(realEstateId: _controller.realEstate?.id,), _controller.accessToken);
 
       setState(() {
         announcements = res;
@@ -38,6 +41,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
 
   @override
   void initState() {
+    _controller = context.read<AuthenticationController>();
     loadValues();
     super.initState();
   }

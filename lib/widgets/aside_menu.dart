@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:imoveis_app/app/signin/signin_page.dart';
 import 'package:imoveis_app/app_dashboard/collaborators/collaborators_page.dart';
 import 'package:imoveis_app/app_dashboard/contacts/contacts_page.dart';
 import 'package:imoveis_app/app_dashboard/leads/leads_page.dart';
 import 'package:imoveis_app/app_dashboard/properties/properties_page.dart';
 import 'package:imoveis_app/app_dashboard/reports/reports_page.dart';
+import 'package:imoveis_app/controllers/authentication_controller.dart';
+import 'package:provider/provider.dart';
 
 class AsideMenu extends StatefulWidget {
   const AsideMenu({super.key});
@@ -88,10 +91,15 @@ class _AsideMenuState extends State<AsideMenu> {
             leading: const Icon(Icons.person_outlined),
             onTap: () {},
           ),
-          ListTile(
-            title: const Text("Sair"),
-            leading: const Icon(Icons.exit_to_app_outlined),
-            onTap: () {},
+          Consumer<AuthenticationController>(
+            builder: (context, value, child) => ListTile(
+              title: const Text("Sair"),
+              leading: const Icon(Icons.exit_to_app_outlined),
+              onTap: () {
+                value.signout();
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SigninPage(),));
+              },
+            ),
           ),
         ],
       ),

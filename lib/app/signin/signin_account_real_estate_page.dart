@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:imoveis_app/app/onboarding/onboarding_page.dart';
 import 'package:imoveis_app/app/signup/signup_page.dart';
+import 'package:imoveis_app/app_dashboard/dashboard_page.dart';
 import 'package:imoveis_app/controllers/authentication_controller.dart';
 import 'package:imoveis_app/widgets/buttons/button_primary.dart';
 import 'package:provider/provider.dart';
@@ -8,16 +10,51 @@ class SigninAccountRealEstatePage extends StatefulWidget {
   const SigninAccountRealEstatePage({super.key});
 
   @override
-  State<SigninAccountRealEstatePage> createState() => _SigninAccountRealEstatePageState();
+  State<SigninAccountRealEstatePage> createState() =>
+      _SigninAccountRealEstatePageState();
 }
 
-class _SigninAccountRealEstatePageState extends State<SigninAccountRealEstatePage> {
+class _SigninAccountRealEstatePageState
+    extends State<SigninAccountRealEstatePage> {
+  late AuthenticationController _controller;
   bool _obscureText = true;
 
   void _togglePasswordView() {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  authListener() {
+    AuthState state = _controller.state;
+    switch (state) {
+      case AuthState.idle:
+        break;
+      case AuthState.success:
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const DashboardPage(),
+            ));
+        break;
+      case AuthState.error:
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(_controller.errorMsg)));
+        break;
+    }
+  }
+
+  @override
+  void initState() {
+    _controller = context.read<AuthenticationController>();
+    _controller.addListener(authListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(authListener);
+    super.dispose();
   }
 
   @override
@@ -75,7 +112,10 @@ class _SigninAccountRealEstatePageState extends State<SigninAccountRealEstatePag
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {},
-                      child: const Text('Esqueceu sua senha?', style: TextStyle(fontWeight: FontWeight.w600),),
+                      child: const Text(
+                        'Esqueceu sua senha?',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -84,7 +124,7 @@ class _SigninAccountRealEstatePageState extends State<SigninAccountRealEstatePag
                   ButtonPrimary(
                     title: 'Entrar',
                     isLoading: value.isLoading,
-                    onPressed: () => value.signin(),
+                    onPressed: () => value.signinRealEstate(),
                   ),
                   Expanded(
                     child: Container(
@@ -95,7 +135,11 @@ class _SigninAccountRealEstatePageState extends State<SigninAccountRealEstatePag
                         children: [
                           const Text('Não tem uma conta?'),
                           TextButton(
-                            onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignupPage(),)),
+                            onPressed: () => Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SignupPage(),
+                                )),
                             child: const Text('Registre agora'),
                           )
                         ],

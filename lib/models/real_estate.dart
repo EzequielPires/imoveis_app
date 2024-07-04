@@ -18,7 +18,7 @@ class RealEstate {
       id: json['id'],
       name: json['name'],
       email: json['email'],
-      logo: json['logo'],
+      logo: json['logo'] ?? json['avatar'],
       cellPhone: json['cellPhone'],
     );
   }

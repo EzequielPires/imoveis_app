@@ -42,7 +42,7 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
         title: const Text(
-          'Atualizar anúncio',
+          'Cadastrar anúncio',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
         bottom: PreferredSize(
