@@ -8,7 +8,7 @@ import 'package:imoveis_app/models/property_type.dart';
 class AnnouncementFactory {
   PropertyType? type;
   TextEditingController typeController = TextEditingController();
-  PropertyAdType? adType;
+  PropertyAdType? adType = PropertyAdType.venda;
   TextEditingController price = TextEditingController();
 
   int numberRooms = 0;
@@ -68,7 +68,6 @@ class AnnouncementFactory {
 
     files = announcement.images?.map((e) => CustomFile(url: e)).toList() ?? [];
 
-
     allowPets = announcement.allowPets ?? false;
     hasPool = announcement.hasPool ?? false;
     hasSolarEnergy = announcement.hasSolarEnergy ?? false;
@@ -85,5 +84,61 @@ class AnnouncementFactory {
     isRoof = announcement.isRoof ?? false;
     isDeedRegistered = announcement.isDeedRegistered ?? false;
     showAddress = announcement.showAddress ?? false;
+  }
+
+  String? isValid() {
+    if (type == null) {
+      return 'Escolha um tipo de imóvel';
+    }
+    if (price.text.isEmpty) {
+      return 'Preencha o preço do imóvel';
+    }
+    if (adType == null) {
+      return 'Escolha um';
+    }
+    if (type == null) {
+      return 'Escolha um tipo de imóvel';
+    }
+    if (addressFactory.stateAddress == null) {
+      return 'Escolha um estado em endereço do imóvel';
+    }
+    if (addressFactory.city == null) {
+      return 'Escolha uma cidade em endereço do imóvel';
+    }
+    return null;
+  }
+
+  toJson() {
+    return {
+      "address": addressFactory.toJson(),
+      "type": type?.enumValue,
+      "adType": adType == PropertyAdType.aluguel ? 'aluguel' : 'venda', 
+      "value": price.text,
+      "description": description.text,
+      "commission": commission.text,
+      "remarks": remarks.text,
+      "video": video.text,
+      "keyInformation": keyInformation.text,
+      "numberBathrooms": numberBathrooms,
+      "numberGarages": numberGarages,
+      "numberRooms": numberRooms,
+      "numberSuites": numberSuites,
+      "allowPets": allowPets,
+      "hasPool": hasPool,
+      "hasSolarEnergy": hasSolarEnergy,
+      "hasSecuritySystem": hasSecuritySystem,
+      "hasElectricFence": hasElectricFence,
+      "hasBarbecue": hasBarbecue,
+      "hasConcertina": hasConcertina,
+      "hasCourt": hasCourt,
+      "hasSoccerField": hasSoccerField,
+      "hasGym": hasGym,
+      "isRegistered": isRegistered,
+      "isFurnished": isFurnished,
+      "isFeatured": isFeatured,
+      "isRoof": isRoof,
+      "isDeedRegistered": isDeedRegistered,
+      "showAddress": showAddress,
+    };
   }
 }

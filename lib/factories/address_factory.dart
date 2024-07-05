@@ -29,4 +29,16 @@ class AddressFactory {
     number.text = address.number ?? '';
     zipcode.text = address.zipcode ?? '';
   }
+
+  toJson() {
+    return {
+      "state": stateAddress != null ? {"id": stateAddress?.id} : null,
+      "city": city != null ? {"id": city?.id} : null,
+      "district": district != null ? {"id": district?.id} : null,
+      "route": route.text,
+      "complement": complement.text,
+      "number": number.text,
+      "zipcode": zipcode.text,
+    };
+  }
 }

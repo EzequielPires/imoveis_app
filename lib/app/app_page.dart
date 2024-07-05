@@ -16,11 +16,11 @@ class AppPage extends StatefulWidget {
 class _AppPageState extends State<AppPage> {
   int selectedIndex = 0;
   List<Widget> pages = [
-    HomePage(),
-    SearchPage(),
-    FavoritesPage(),
-    AnnouncePage(),
-    ProfilePage()
+    const HomePage(),
+    const SearchPage(),
+    const FavoritesPage(),
+    const AnnouncePage(),
+    const ProfilePage()
   ];
 
   @override
