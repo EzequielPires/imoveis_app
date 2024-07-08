@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:imoveis_app/app/announcement/%5Bannouncement_id%5D_page.dart';
 import 'package:imoveis_app/app/announcement/update_announcement_page.dart';
 import 'package:imoveis_app/models/announcement.dart';
 import 'package:imoveis_app/models/property_type.dart';
@@ -20,8 +19,7 @@ class CardAnnouncementDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: const BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+    return Card.filled(
       clipBehavior: Clip.antiAlias,
       margin: EdgeInsets.zero,
       child: InkWell(
@@ -40,10 +38,12 @@ class CardAnnouncementDashboard extends StatelessWidget {
               Stack(
                 children: [
                   Container(
+                    margin: const EdgeInsets.all(16),
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(16),
-                    width: 132,
-                    height: 132,
+                    width: 100,
+                    height: 100,
+                    color: Colors.grey.shade100,
                     child: announcement.thumbnail != null
                         ? Image.network(
                             announcement.thumbnail!.startsWith('storage')
@@ -59,7 +59,11 @@ class CardAnnouncementDashboard extends StatelessWidget {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.only(
+                    right: 16,
+                    top: 16,
+                    bottom: 16,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

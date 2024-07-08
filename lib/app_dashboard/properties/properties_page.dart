@@ -59,7 +59,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
         actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.tune_outlined))],
       ),
       body: ListView.separated(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: const EdgeInsets.all(16),
         itemBuilder: (context, index) => CardAnnouncementDashboard(announcement: announcements[index]),
         itemCount: announcements.length,
         separatorBuilder: (context, index) => const SizedBox(height: 16,),

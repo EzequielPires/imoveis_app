@@ -29,7 +29,7 @@ class _DescriptionSectionState extends State<DescriptionSection> {
           decoration: const InputDecoration(
             alignLabelWithHint: true,
             label: Text('Breve descrição'),
-            hintText: 'Insira o complamento do imóvel',
+            hintText: 'Insira o complemento do imóvel',
             hintStyle: TextStyle(fontWeight: FontWeight.w300),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),

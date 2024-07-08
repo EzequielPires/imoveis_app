@@ -102,12 +102,12 @@ class AuthenticationController extends ChangeNotifier {
   loadUser() async {
     final shared = await SharedPreferences.getInstance();
     final userData = shared.getString('user');
-    final realEsteteData = shared.getString('realEstate');
+    final realEstateData = shared.getString('realEstate');
     final token = shared.getString('token');
 
-    if (realEsteteData != null) {
+    if (realEstateData != null) {
       userData != null ? user = User.fromJson(json.decode(userData)) : null;
-      realEstate = RealEstate.fromJson(json.decode(realEsteteData));
+      realEstate = RealEstate.fromJson(json.decode(realEstateData));
       accessToken = token;
       userState = UserState.loggedInRealEstate;
       notifyListeners();
