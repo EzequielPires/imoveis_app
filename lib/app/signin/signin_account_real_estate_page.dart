@@ -64,7 +64,10 @@ class _SigninAccountRealEstatePageState
       appBar: AppBar(
         backgroundColor: Colors.white,
       ),
-      body: Container(
+      body: Center(
+        child: Container(
+          alignment: Alignment.topCenter,
+          constraints: const BoxConstraints(maxWidth: 500),
           padding: const EdgeInsets.all(20),
           child: Consumer<AuthenticationController>(
             builder: (context, value, child) {
@@ -149,7 +152,9 @@ class _SigninAccountRealEstatePageState
                 ],
               );
             },
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

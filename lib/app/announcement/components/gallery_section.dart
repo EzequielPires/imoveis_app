@@ -24,6 +24,7 @@ class _GallerySectionState extends State<GallerySection> {
       children: [
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.start,
+          runAlignment: WrapAlignment.start,
           spacing: 8,
           runSpacing: 8,
           children: widget.announcementFactory.files

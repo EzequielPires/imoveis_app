@@ -14,7 +14,7 @@ class MultimagePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ButtonOutlined(
-        title: 'Adicionar imagem',
+        title: 'Adicionar imagens',
         icon: Icons.image_outlined,
         onPressed: () {
           showModalBottomSheet<void>(

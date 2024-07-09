@@ -101,58 +101,63 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 4,
-            ),
-            TextFormField(
-              controller: _announcementFactory.typeController,
-              decoration: const InputDecoration(
-                label: Text('Tipo de imóvel'),
-                hintText: 'Selecione um tipo',
-                hintStyle: TextStyle(fontWeight: FontWeight.w300),
-                suffixIcon: Icon(Icons.arrow_drop_down),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
+        child: Center(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 4,
                 ),
-              ),
-              //enabled: !value.isLoading,
-              readOnly: true,
-              onTap: () async {
-                await showDialog(
-                  context: context,
-                  builder: (context) => SelectPropertyType(
-                    types: propertyTypeData,
-                    onSelected: changeType,
+                TextFormField(
+                  controller: _announcementFactory.typeController,
+                  decoration: const InputDecoration(
+                    label: Text('Tipo de imóvel'),
+                    hintText: 'Selecione um tipo',
+                    hintStyle: TextStyle(fontWeight: FontWeight.w300),
+                    suffixIcon: Icon(Icons.arrow_drop_down),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
                   ),
-                );
-              },
+                  //enabled: !value.isLoading,
+                  readOnly: true,
+                  onTap: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => SelectPropertyType(
+                        types: propertyTypeData,
+                        onSelected: changeType,
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                PriceInputField(controller: _announcementFactory.price),
+                const SizedBox(
+                  height: 12,
+                ),
+                Divider(
+                  color: Colors.grey[200],
+                ),
+                DetailsSection(announcementFactory: _announcementFactory),
+                Divider(
+                  color: Colors.grey[200],
+                ),
+                AddressSection(announcementFactory: _announcementFactory),
+                Divider(
+                  color: Colors.grey[200],
+                ),
+                DescriptionSection(announcementFactory: _announcementFactory),
+                Divider(
+                  color: Colors.grey[200],
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 24,
-            ),
-            PriceInputField(controller: _announcementFactory.price),
-            const SizedBox(
-              height: 12,
-            ),
-            Divider(
-              color: Colors.grey[200],
-            ),
-            DetailsSection(announcementFactory: _announcementFactory),
-            Divider(
-              color: Colors.grey[200],
-            ),
-            AddressSection(announcementFactory: _announcementFactory),
-            Divider(
-              color: Colors.grey[200],
-            ),
-            DescriptionSection(announcementFactory: _announcementFactory),
-            Divider(
-              color: Colors.grey[200],
-            ),
-          ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(

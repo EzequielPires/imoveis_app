@@ -25,7 +25,11 @@ class _PropertiesPageState extends State<PropertiesPage> {
         isLoading = true;
       });
 
-      var res = await _repository.find(QueryAnnouncement(realEstateId: _controller.realEstate?.id,), _controller.accessToken);
+      var res = await _repository.find(
+          QueryAnnouncement(
+            realEstateId: _controller.realEstate?.id,
+          ),
+          _controller.accessToken);
 
       setState(() {
         announcements = res;
@@ -56,20 +60,37 @@ class _PropertiesPageState extends State<PropertiesPage> {
           'Propriedades',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.tune_outlined))],
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.tune_outlined))
+        ],
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(16),
-        itemBuilder: (context, index) => CardAnnouncementDashboard(announcement: announcements[index]),
-        itemCount: announcements.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 16,),
-      ),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.separated(
+              padding: const EdgeInsets.all(16),
+              itemBuilder: (context, index) => CardAnnouncementDashboard(
+                announcement: announcements[index],
+                onPress: () async {
+                  await loadValues();
+                },
+              ),
+              itemCount: announcements.length,
+              separatorBuilder: (context, index) => const SizedBox(
+                height: 16,
+              ),
+            ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const CreateAnnouncementPage(),
-            )),
+            ),
+          );
+          await loadValues();
+        },
         child: const Icon(Icons.add_outlined),
       ),
     );

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:imoveis_app/factories/collaborator_factory.dart';
+import 'package:imoveis_app/helpers/mask.dart';
 import 'package:imoveis_app/widgets/buttons/button_primary.dart';
 
 class CreateCollaboratorsPage extends StatefulWidget {
@@ -10,10 +12,10 @@ class CreateCollaboratorsPage extends StatefulWidget {
 }
 
 class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
-  handleSubmit() async {
+  final CollaboratorFactory _factory = CollaboratorFactory();
 
-  }
-  
+  handleSubmit() async {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +31,7 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
         child: Column(
           children: [
             TextFormField(
+              controller: _factory.name,
               decoration: const InputDecoration(
                 alignLabelWithHint: true,
                 label: Text('Nome'),
@@ -46,6 +49,8 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
               children: [
                 Expanded(
                   child: TextFormField(
+                    controller: _factory.phone,
+                    inputFormatters: [phoneFormatter],
                     decoration: const InputDecoration(
                       alignLabelWithHint: true,
                       label: Text('Telefone'),
@@ -62,6 +67,8 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
                 ),
                 Expanded(
                   child: TextFormField(
+                    controller: _factory.cpf,
+                    inputFormatters: [cpfFormatter],
                     decoration: const InputDecoration(
                       alignLabelWithHint: true,
                       label: Text('CPF'),
@@ -79,6 +86,7 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
               height: 16,
             ),
             TextFormField(
+              controller: _factory.email,
               decoration: const InputDecoration(
                 alignLabelWithHint: true,
                 label: Text('Email'),
@@ -93,6 +101,8 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
               height: 16,
             ),
             TextFormField(
+              controller: _factory.password,
+              obscureText: true,
               decoration: const InputDecoration(
                 alignLabelWithHint: true,
                 label: Text('Senha'),
@@ -106,10 +116,13 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
             const SizedBox(
               height: 16,
             ),
-            const DropdownMenu(
-              expandedInsets: EdgeInsets.all(0),
-              label: Text('Tipo do colaborador'),
-              dropdownMenuEntries: [
+            DropdownMenu(
+              expandedInsets: const EdgeInsets.all(0),
+              label: const Text('Tipo do colaborador'),
+              onSelected: (value) => setState(() {
+                _factory.type = value;
+              }),
+              dropdownMenuEntries: const [
                 DropdownMenuEntry(value: 1, label: 'Corretor'),
                 DropdownMenuEntry(value: 2, label: 'Administrador'),
               ],
@@ -119,16 +132,30 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
             ),
             CheckboxListTile(
               contentPadding: EdgeInsets.zero,
-              value: false,
+              value: _factory.focusAdType.contains('venda'),
               title: const Text('Venda de imóveis'),
               onChanged: (value) {
+                setState(() {
+                  if (value == true) {
+                    _factory.focusAdType.add('venda');
+                  } else {
+                    _factory.focusAdType.remove('venda');
+                  }
+                });
               },
             ),
             CheckboxListTile(
               contentPadding: EdgeInsets.zero,
-              value: false,
+              value: _factory.focusAdType.contains('aluguel'),
               title: const Text('Locação de imóveis'),
               onChanged: (value) {
+                setState(() {
+                  if (value == true) {
+                    _factory.focusAdType.add('aluguel');
+                  } else {
+                    _factory.focusAdType.remove('aluguel');
+                  }
+                });
               },
             ),
           ],

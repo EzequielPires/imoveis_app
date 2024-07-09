@@ -28,4 +28,10 @@ class ApiService {
 
     return response.data;
   }
+
+  Future<Map<String, dynamic>> patchForm(String path, FormData? data, Map<String, dynamic>? headers) async {
+    var response = await dio.patch(path, data: data, options: Options(headers: headers));
+
+    return response.data;
+  }
 }

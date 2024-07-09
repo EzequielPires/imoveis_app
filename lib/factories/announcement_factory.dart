@@ -24,6 +24,7 @@ class AnnouncementFactory {
 
   AddressFactory addressFactory = AddressFactory();
   List<CustomFile> files = [];
+  CustomFile? thumbnail;
 
   bool allowPets = false;
   bool hasPool = false;

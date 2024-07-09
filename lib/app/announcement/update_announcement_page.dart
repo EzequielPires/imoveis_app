@@ -5,19 +5,13 @@ import 'package:imoveis_app/app/announcement/components/description_section.dart
 import 'package:imoveis_app/app/announcement/components/details_section.dart';
 import 'package:imoveis_app/app/announcement/components/gallery_section.dart';
 import 'package:imoveis_app/factories/announcement_factory.dart';
-import 'package:imoveis_app/models/address.dart';
 import 'package:imoveis_app/models/announcement.dart';
 import 'package:imoveis_app/models/property_type.dart';
-import 'package:imoveis_app/repositories/address_repository.dart';
-import 'package:imoveis_app/services/api_service.dart';
+import 'package:imoveis_app/repositories/announcements_repository.dart';
 import 'package:imoveis_app/widgets/buttons/button_primary.dart';
 import 'package:imoveis_app/widgets/cards/card_custom_file.dart';
-import 'package:imoveis_app/widgets/form_components/count_field.dart';
-import 'package:imoveis_app/widgets/form_components/select_city.dart';
-import 'package:imoveis_app/widgets/form_components/select_district.dart';
-import 'package:imoveis_app/widgets/form_components/select_state.dart';
 import 'package:imoveis_app/widgets/form_components/select_type.dart';
-import 'package:imoveis_app/widgets/multimage_picker.dart';
+import 'package:imoveis_app/widgets/image_picker.dart';
 
 class UpdateAnnouncementPage extends StatefulWidget {
   final Announcement announcement;
@@ -30,6 +24,8 @@ class UpdateAnnouncementPage extends StatefulWidget {
 class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  final AnnouncementsRepository _announcementsRepository =
+      AnnouncementsRepository();
   final AnnouncementFactory _announcementFactory = AnnouncementFactory();
 
   @override
@@ -44,6 +40,34 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
       _announcementFactory.type = type;
       _announcementFactory.typeController.text = type.name;
     });
+  }
+
+  handleSubmit() async {
+    var valid = _announcementFactory.isValid();
+    if (valid == null) {
+      var res = await _announcementsRepository.update(
+          widget.announcement.id!, _announcementFactory.toJson());
+      if (res.success && res.announcement != null) {
+        if (_announcementFactory.thumbnail != null) {
+          await _announcementsRepository.uploadThumbnail(
+              widget.announcement.id!, _announcementFactory.thumbnail!);
+        }
+        await _announcementsRepository.uploadImages(
+            widget.announcement.id!, _announcementFactory.files);
+      }
+    } else {
+      handleError(valid);
+    }
+  }
+
+  handleError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(color: Colors.red),
+      ),
+      backgroundColor: Colors.red[50],
+    ));
   }
 
   @override
@@ -123,6 +147,25 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
               ),
             ),
             const SizedBox(
+              height: 24,
+            ),
+            const Text('Foto de capa'),
+            const SizedBox(
+              height: 8,
+            ),
+            _announcementFactory.thumbnail != null
+                ? CardCustomFile(
+                    customFile: _announcementFactory.thumbnail!,
+                    full: true,
+                  )
+                : ButtonImagePicker(
+                    onImageSelected: (file) {
+                      setState(() {
+                        _announcementFactory.thumbnail = file;
+                      });
+                    },
+                  ),
+            const SizedBox(
               height: 12,
             ),
             Divider(
@@ -154,15 +197,7 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
       bottomNavigationBar: BottomAppBar(
         child: ButtonPrimary(
           title: 'Salvar imóvel',
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: const Text(
-                'Yay! A SnackBar!',
-                style: TextStyle(color: Colors.red),
-              ),
-              backgroundColor: Colors.red[50],
-            ));
-          },
+          onPressed: handleSubmit,
         ),
       ),
     );

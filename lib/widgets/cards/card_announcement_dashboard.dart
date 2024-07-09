@@ -6,7 +6,9 @@ import 'package:intl/intl.dart';
 
 class CardAnnouncementDashboard extends StatelessWidget {
   final Announcement announcement;
-  const CardAnnouncementDashboard({super.key, required this.announcement});
+  final Function() onPress;
+  const CardAnnouncementDashboard(
+      {super.key, required this.announcement, required this.onPress});
 
   String formatCurrency(int number) {
     final NumberFormat formatter = NumberFormat.currency(
@@ -21,15 +23,20 @@ class CardAnnouncementDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card.filled(
       clipBehavior: Clip.antiAlias,
+      surfaceTintColor: Colors.white,
       margin: EdgeInsets.zero,
       child: InkWell(
-        onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UpdateAnnouncementPage(
-                announcement: announcement,
-              ),
-            )),
+        hoverColor: Colors.white,
+        onTap: () async {
+          await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UpdateAnnouncementPage(
+                  announcement: announcement,
+                ),
+              ));
+          onPress();
+        },
         child: SizedBox(
           width: double.infinity,
           child: Row(
