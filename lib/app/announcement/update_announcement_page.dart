@@ -4,7 +4,6 @@ import 'package:imoveis_app/app/announcement/components/address_section.dart';
 import 'package:imoveis_app/app/announcement/components/description_section.dart';
 import 'package:imoveis_app/app/announcement/components/details_section.dart';
 import 'package:imoveis_app/app/announcement/components/gallery_section.dart';
-import 'package:imoveis_app/app/announcement/success_create_announcement.dart';
 import 'package:imoveis_app/app/announcement/success_update_announcement.dart';
 import 'package:imoveis_app/factories/announcement_factory.dart';
 import 'package:imoveis_app/models/announcement.dart';
@@ -23,9 +22,7 @@ class UpdateAnnouncementPage extends StatefulWidget {
   State<UpdateAnnouncementPage> createState() => _UpdateAnnouncementPageState();
 }
 
-class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
-    with TickerProviderStateMixin {
-  late TabController _tabController;
+class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage> {
   final AnnouncementsRepository _announcementsRepository =
       AnnouncementsRepository();
   final AnnouncementFactory _announcementFactory = AnnouncementFactory();
@@ -33,7 +30,6 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
     _announcementFactory.hydrate(widget.announcement);
     super.initState();
   }
@@ -96,8 +92,9 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
   }
 
   handleRemoveThumbnail() async {
-    var res = await _announcementsRepository.removeThumbnail(widget.announcement.id!);
-    if(res) {
+    var res =
+        await _announcementsRepository.removeThumbnail(widget.announcement.id!);
+    if (res) {
       setState(() {
         _announcementFactory.thumbnail = null;
       });
@@ -115,21 +112,9 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
           'Atualizar anúncio',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.delete_outline))],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(48),
-          child: TabBar(
-            controller: _tabController,
-            tabs: const [
-              Tab(
-                text: 'Vender',
-              ),
-              Tab(
-                text: 'Alugar',
-              ),
-            ],
-          ),
-        ),
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.delete_outline))
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -141,6 +126,30 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
               children: [
                 const SizedBox(
                   height: 4,
+                ),
+                DropdownMenu(
+                  controller: _announcementFactory.adTypeController,
+                  expandedInsets: const EdgeInsets.all(0),
+                  label: const Text('Finalidade'),
+                  inputDecorationTheme: const InputDecorationTheme(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
+                  ),
+                  onSelected: (value) => setState(() {
+                    _announcementFactory.adType = value == 1
+                        ? PropertyAdType.venda
+                        : value == 2
+                            ? PropertyAdType.aluguel
+                            : PropertyAdType.venda;
+                  }),
+                  dropdownMenuEntries: const [
+                    DropdownMenuEntry(value: 1, label: 'Venda'),
+                    DropdownMenuEntry(value: 2, label: 'Aluguel'),
+                  ],
+                ),
+                const SizedBox(
+                  height: 24,
                 ),
                 TextFormField(
                   controller: _announcementFactory.typeController,
@@ -222,7 +231,10 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
                 Divider(
                   color: Colors.grey[200],
                 ),
-                GallerySection(announcementFactory: _announcementFactory, id: widget.announcement.id!,),
+                GallerySection(
+                  announcementFactory: _announcementFactory,
+                  id: widget.announcement.id!,
+                ),
                 Divider(
                   color: Colors.grey[200],
                 ),

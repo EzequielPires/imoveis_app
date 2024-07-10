@@ -20,9 +20,7 @@ class CreateAnnouncementPage extends StatefulWidget {
   State<CreateAnnouncementPage> createState() => _CreateAnnouncementPageState();
 }
 
-class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
-    with TickerProviderStateMixin {
-  late TabController _tabController;
+class _CreateAnnouncementPageState extends State<CreateAnnouncementPage> {
   final AnnouncementFactory _announcementFactory = AnnouncementFactory();
   final AnnouncementsRepository _announcementsRepository =
       AnnouncementsRepository();
@@ -30,7 +28,6 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -97,26 +94,6 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
           'Cadastrar anúncio',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(48),
-          child: TabBar(
-            controller: _tabController,
-            onTap: (value) {
-              setState(() {
-                _announcementFactory.adType =
-                    value == 1 ? PropertyAdType.aluguel : PropertyAdType.venda;
-              });
-            },
-            tabs: const [
-              Tab(
-                text: 'Vender',
-              ),
-              Tab(
-                text: 'Alugar',
-              ),
-            ],
-          ),
-        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -128,6 +105,30 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
               children: [
                 const SizedBox(
                   height: 4,
+                ),
+                DropdownMenu(
+                  controller: _announcementFactory.adTypeController,
+                  expandedInsets: const EdgeInsets.all(0),
+                  label: const Text('Finalidade'),
+                  inputDecorationTheme: const InputDecorationTheme(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
+                  ),
+                  onSelected: (value) => setState(() {
+                    _announcementFactory.adType = value == 1
+                        ? PropertyAdType.venda
+                        : value == 2
+                            ? PropertyAdType.aluguel
+                            : PropertyAdType.venda;
+                  }),
+                  dropdownMenuEntries: const [
+                    DropdownMenuEntry(value: 1, label: 'Venda'),
+                    DropdownMenuEntry(value: 2, label: 'Aluguel'),
+                  ],
+                ),
+                const SizedBox(
+                  height: 24,
                 ),
                 TextFormField(
                   controller: _announcementFactory.typeController,

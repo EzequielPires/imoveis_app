@@ -9,6 +9,7 @@ class AnnouncementFactory {
   PropertyType? type;
   TextEditingController typeController = TextEditingController();
   PropertyAdType? adType = PropertyAdType.venda;
+  TextEditingController adTypeController = TextEditingController();
   TextEditingController price = TextEditingController();
 
   int numberRooms = 0;
@@ -54,6 +55,7 @@ class AnnouncementFactory {
         : null;
     type = propertyTypeData.firstWhere((e) => e.enumValue == announcement.type);
     typeController.text = type!.name;
+    adTypeController.text = announcement.adType == 'venda' ? 'Venda' : 'Aluguel';
     price.text = maskPrice(announcement.value);
     thumbnail = announcement.thumbnail != null ? CustomFile(url: announcement.thumbnail) : null;
 

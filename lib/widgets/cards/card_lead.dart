@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imoveis_app/helpers/mask.dart';
 import 'package:imoveis_app/models/lead.dart';
 
 class CardLead extends StatelessWidget {
@@ -70,14 +71,28 @@ class CardLead extends StatelessWidget {
                         width: 16,
                       ),
                       Expanded(
-                        child: Text(
-                          lead.property?.getFullTitle(),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              lead.property?.getFullTitle(),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              'R\$${maskPrice(lead.property?.value ?? '')}',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
