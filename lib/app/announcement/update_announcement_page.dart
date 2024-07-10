@@ -4,6 +4,8 @@ import 'package:imoveis_app/app/announcement/components/address_section.dart';
 import 'package:imoveis_app/app/announcement/components/description_section.dart';
 import 'package:imoveis_app/app/announcement/components/details_section.dart';
 import 'package:imoveis_app/app/announcement/components/gallery_section.dart';
+import 'package:imoveis_app/app/announcement/success_create_announcement.dart';
+import 'package:imoveis_app/app/announcement/success_update_announcement.dart';
 import 'package:imoveis_app/factories/announcement_factory.dart';
 import 'package:imoveis_app/models/announcement.dart';
 import 'package:imoveis_app/models/property_type.dart';
@@ -27,6 +29,7 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
   final AnnouncementsRepository _announcementsRepository =
       AnnouncementsRepository();
   final AnnouncementFactory _announcementFactory = AnnouncementFactory();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -43,21 +46,43 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
   }
 
   handleSubmit() async {
-    var valid = _announcementFactory.isValid();
-    if (valid == null) {
-      var res = await _announcementsRepository.update(
-          widget.announcement.id!, _announcementFactory.toJson());
-      if (res.success && res.announcement != null) {
-        if (_announcementFactory.thumbnail != null) {
-          await _announcementsRepository.uploadThumbnail(
-              widget.announcement.id!, _announcementFactory.thumbnail!);
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var valid = _announcementFactory.isValid();
+      if (valid == null) {
+        var res = await _announcementsRepository.update(
+            widget.announcement.id!, _announcementFactory.toJson());
+        if (res.success && res.announcement != null) {
+          if (_announcementFactory.thumbnail != null) {
+            await _announcementsRepository.uploadThumbnail(
+                widget.announcement.id!, _announcementFactory.thumbnail!);
+          }
+          await _announcementsRepository.uploadImages(
+              widget.announcement.id!, _announcementFactory.files);
         }
-        await _announcementsRepository.uploadImages(
-            widget.announcement.id!, _announcementFactory.files);
+        handleSuccess(widget.announcement);
+      } else {
+        handleError(valid);
       }
-    } else {
-      handleError(valid);
+    } catch (error) {
+      handleError(error.toString());
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
+  }
+
+  handleSuccess(Announcement announcement) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            SuccessUpdateAnnouncement(announcement: announcement),
+      ),
+    );
   }
 
   handleError(String message) {
@@ -68,6 +93,15 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
       ),
       backgroundColor: Colors.red[50],
     ));
+  }
+
+  handleRemoveThumbnail() async {
+    var res = await _announcementsRepository.removeThumbnail(widget.announcement.id!);
+    if(res) {
+      setState(() {
+        _announcementFactory.thumbnail = null;
+      });
+    }
   }
 
   @override
@@ -81,6 +115,7 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
           'Atualizar anúncio',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.delete_outline))],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
           child: TabBar(
@@ -98,105 +133,112 @@ class _UpdateAnnouncementPageState extends State<UpdateAnnouncementPage>
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 4,
-            ),
-            TextFormField(
-              controller: _announcementFactory.typeController,
-              decoration: const InputDecoration(
-                label: Text('Tipo de imóvel'),
-                hintText: 'Selecione um tipo',
-                hintStyle: TextStyle(fontWeight: FontWeight.w300),
-                suffixIcon: Icon(Icons.arrow_drop_down),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
+        child: Center(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 4,
                 ),
-              ),
-              //enabled: !value.isLoading,
-              readOnly: true,
-              onTap: () async {
-                await showDialog(
-                  context: context,
-                  builder: (context) => SelectPropertyType(
-                    types: propertyTypeData,
-                    onSelected: changeType,
+                TextFormField(
+                  controller: _announcementFactory.typeController,
+                  decoration: const InputDecoration(
+                    label: Text('Tipo de imóvel'),
+                    hintText: 'Selecione um tipo',
+                    hintStyle: TextStyle(fontWeight: FontWeight.w300),
+                    suffixIcon: Icon(Icons.arrow_drop_down),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
                   ),
-                );
-              },
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            TextFormField(
-              controller: _announcementFactory.price,
-              decoration: const InputDecoration(
-                label: Text('Preço do imóvel'),
-                hintText: 'Insira o preço do imóvel',
-                hintStyle: TextStyle(fontWeight: FontWeight.w300),
-                prefix: Text(
-                  'R\$ ',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600, color: Colors.indigo),
+                  //enabled: !value.isLoading,
+                  readOnly: true,
+                  onTap: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => SelectPropertyType(
+                        types: propertyTypeData,
+                        onSelected: changeType,
+                      ),
+                    );
+                  },
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                const SizedBox(
+                  height: 24,
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            const Text('Foto de capa'),
-            const SizedBox(
-              height: 8,
-            ),
-            _announcementFactory.thumbnail != null
-                ? CardCustomFile(
-                    customFile: _announcementFactory.thumbnail!,
-                    full: true,
-                  )
-                : ButtonImagePicker(
-                    onImageSelected: (file) {
-                      setState(() {
-                        _announcementFactory.thumbnail = file;
-                      });
-                    },
+                TextFormField(
+                  controller: _announcementFactory.price,
+                  decoration: const InputDecoration(
+                    label: Text('Preço do imóvel'),
+                    hintText: 'Insira o preço do imóvel',
+                    hintStyle: TextStyle(fontWeight: FontWeight.w300),
+                    prefix: Text(
+                      'R\$ ',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, color: Colors.indigo),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
                   ),
-            const SizedBox(
-              height: 12,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                const Text('Foto de capa'),
+                const SizedBox(
+                  height: 8,
+                ),
+                _announcementFactory.thumbnail != null
+                    ? CardCustomFile(
+                        customFile: _announcementFactory.thumbnail!,
+                        full: true,
+                        onRemove: handleRemoveThumbnail,
+                      )
+                    : ButtonImagePicker(
+                        onImageSelected: (file) {
+                          setState(() {
+                            _announcementFactory.thumbnail = file;
+                          });
+                        },
+                      ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Divider(
+                  color: Colors.grey[200],
+                ),
+                DetailsSection(announcementFactory: _announcementFactory),
+                Divider(
+                  color: Colors.grey[200],
+                ),
+                AddressSection(announcementFactory: _announcementFactory),
+                Divider(
+                  color: Colors.grey[200],
+                ),
+                DescriptionSection(announcementFactory: _announcementFactory),
+                Divider(
+                  color: Colors.grey[200],
+                ),
+                GallerySection(announcementFactory: _announcementFactory, id: widget.announcement.id!,),
+                Divider(
+                  color: Colors.grey[200],
+                ),
+                AdditionalSection(announcementFactory: _announcementFactory),
+                Divider(
+                  color: Colors.grey[200],
+                ),
+              ],
             ),
-            Divider(
-              color: Colors.grey[200],
-            ),
-            DetailsSection(announcementFactory: _announcementFactory),
-            Divider(
-              color: Colors.grey[200],
-            ),
-            AddressSection(announcementFactory: _announcementFactory),
-            Divider(
-              color: Colors.grey[200],
-            ),
-            DescriptionSection(announcementFactory: _announcementFactory),
-            Divider(
-              color: Colors.grey[200],
-            ),
-            GallerySection(announcementFactory: _announcementFactory),
-            Divider(
-              color: Colors.grey[200],
-            ),
-            AdditionalSection(announcementFactory: _announcementFactory),
-            Divider(
-              color: Colors.grey[200],
-            ),
-          ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
         child: ButtonPrimary(
           title: 'Salvar imóvel',
+          isLoading: isLoading,
           onPressed: handleSubmit,
         ),
       ),

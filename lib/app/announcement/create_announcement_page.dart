@@ -6,6 +6,7 @@ import 'package:imoveis_app/app/announcement/components/details_section.dart';
 import 'package:imoveis_app/app/announcement/components/gallery_section.dart';
 import 'package:imoveis_app/app/announcement/success_create_announcement.dart';
 import 'package:imoveis_app/factories/announcement_factory.dart';
+import 'package:imoveis_app/models/announcement.dart';
 import 'package:imoveis_app/models/property_type.dart';
 import 'package:imoveis_app/repositories/announcements_repository.dart';
 import 'package:imoveis_app/widgets/buttons/button_primary.dart';
@@ -25,6 +26,7 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
   final AnnouncementFactory _announcementFactory = AnnouncementFactory();
   final AnnouncementsRepository _announcementsRepository =
       AnnouncementsRepository();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -40,21 +42,38 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
   }
 
   handleSubmit() async {
-    var valid = _announcementFactory.isValid();
-    if (valid == null) {
-      var res =
-          await _announcementsRepository.create(_announcementFactory.toJson());
-      if (res.success && res.announcement != null) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  SuccessCreateAnnouncement(announcement: res.announcement!),
-            ));
+    try {
+      setState(() {
+        isLoading = true;
+      });
+
+      var valid = _announcementFactory.isValid();
+      if (valid == null) {
+        var res = await _announcementsRepository
+            .create(_announcementFactory.toJson());
+        if (res.success && res.announcement != null) {
+          handleSuccess(res.announcement!);
+        }
+      } else {
+        handleError(valid);
       }
-    } else {
-      handleError(valid);
+    } catch (error) {
+      handleError(error.toString());
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
+  }
+
+  handleSuccess(Announcement announcement) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            SuccessCreateAnnouncement(announcement: announcement),
+      ),
+    );
   }
 
   handleError(String message) {
@@ -163,6 +182,7 @@ class _CreateAnnouncementPageState extends State<CreateAnnouncementPage>
       bottomNavigationBar: BottomAppBar(
         child: ButtonPrimary(
           title: 'Salvar imóvel',
+          isLoading: isLoading,
           onPressed: handleSubmit,
         ),
       ),

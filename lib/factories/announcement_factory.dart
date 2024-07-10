@@ -55,6 +55,7 @@ class AnnouncementFactory {
     type = propertyTypeData.firstWhere((e) => e.enumValue == announcement.type);
     typeController.text = type!.name;
     price.text = maskPrice(announcement.value);
+    thumbnail = announcement.thumbnail != null ? CustomFile(url: announcement.thumbnail) : null;
 
     description.text = announcement.description ?? '';
     commission.text = announcement.commission ?? '';

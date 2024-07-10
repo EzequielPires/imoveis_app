@@ -104,7 +104,6 @@ class AnnouncementsRepository {
       var res = await _apiService
           .post('property', data, {"authorization": "Bearer $token"});
       if (res['success'] && res['property'] != null) {
-        print(res['property']);
         Announcement? announcement = await findOne(res['property']['id']);
         return ResponseAnnouncement(
             message: 'Anúncio criado com sucesso.',
@@ -130,7 +129,6 @@ class AnnouncementsRepository {
       var res = await _apiService
           .patch('property/$id', data, {"authorization": "Bearer $token"});
       if (res['success'] && res['property'] != null) {
-        print(res['property']);
         Announcement? announcement = await findOne(res['property']['id']);
         return ResponseAnnouncement(
             message: 'Anúncio criado com sucesso.',
@@ -157,9 +155,7 @@ class AnnouncementsRepository {
         'file': await MultipartFile.fromFile(file.file!.path),
       });
 
-      final response = await _apiService.patchForm(
-          'property/upload-thumbnail/$id',
-          data,
+      await _apiService.patchForm('property/upload-thumbnail/$id', data,
           {"authorization": "Bearer $token"});
     }
   }
@@ -174,11 +170,40 @@ class AnnouncementsRepository {
           'file': await MultipartFile.fromFile(file.file!.path),
         });
 
-        final response = await _apiService.patchForm(
-            'property/upload-image/$id',
-            data,
+        await _apiService.patchForm('property/upload-image/$id', data,
             {"authorization": "Bearer $token"});
       }
     }
+  }
+
+  Future<List<String>> removeImage(String id, String path) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    var res = await _apiService.patch(
+      'property/remove-image/$id',
+      {
+        "path": path,
+      },
+      {"authorization": "Bearer $token"},
+    );
+
+    var results = res['images'] as List;
+    List<String> images = results.map((e) => e.toString()).toList();
+
+    return images;
+  }
+
+  Future<bool> removeThumbnail(String id) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    var res = await _apiService.patch(
+      'property/remove-thumbnail/$id',
+      null,
+      {"authorization": "Bearer $token"},
+    );
+
+    return res['success'] == true;
   }
 }

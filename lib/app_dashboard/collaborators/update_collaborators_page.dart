@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:imoveis_app/factories/collaborator_factory.dart';
 import 'package:imoveis_app/helpers/mask.dart';
+import 'package:imoveis_app/models/user.dart';
+import 'package:imoveis_app/widgets/buttons/button_outlined.dart';
 import 'package:imoveis_app/widgets/buttons/button_primary.dart';
 
-class CreateCollaboratorsPage extends StatefulWidget {
-  const CreateCollaboratorsPage({super.key});
+class UpdateCollaboratorsPage extends StatefulWidget {
+  final User user;
+  const UpdateCollaboratorsPage({super.key, required this.user});
 
   @override
-  State<CreateCollaboratorsPage> createState() =>
-      _CreateCollaboratorsPageState();
+  State<UpdateCollaboratorsPage> createState() =>
+      _UpdateCollaboratorsPageState();
 }
 
-class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
+class _UpdateCollaboratorsPageState extends State<UpdateCollaboratorsPage> {
   final CollaboratorFactory _factory = CollaboratorFactory();
 
   handleSubmit() async {}
+
+  @override
+  void initState() {
+    _factory.hydrate(widget.user);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +31,7 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text(
-          'Cadastrar colaborador',
+          'Atualizar colaborador',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
@@ -103,23 +112,8 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
                 const SizedBox(
                   height: 16,
                 ),
-                TextFormField(
-                  controller: _factory.password,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    alignLabelWithHint: true,
-                    label: Text('Senha'),
-                    hintText: 'Insira a senha',
-                    hintStyle: TextStyle(fontWeight: FontWeight.w300),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
                 DropdownMenu(
+                  controller: _factory.typeController,
                   expandedInsets: const EdgeInsets.all(0),
                   label: const Text('Tipo do colaborador'),
                   onSelected: (value) => setState(() {
@@ -160,6 +154,13 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
                       }
                     });
                   },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                ButtonOutlined(
+                  title: 'Atualizar senha',
+                  onPressed: () {},
                 ),
               ],
             ),

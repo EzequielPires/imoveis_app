@@ -47,10 +47,13 @@ class CardAnnouncementDashboard extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.all(16),
                     alignment: Alignment.center,
-                    padding: const EdgeInsets.all(16),
                     width: 100,
                     height: 100,
-                    color: Colors.grey.shade100,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.grey.shade100,
+                    ),
                     child: announcement.thumbnail != null
                         ? Image.network(
                             announcement.thumbnail!.startsWith('storage')

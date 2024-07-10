@@ -4,6 +4,7 @@ import 'package:imoveis_app/controllers/authentication_controller.dart';
 import 'package:imoveis_app/models/announcement.dart';
 import 'package:imoveis_app/repositories/announcements_repository.dart';
 import 'package:imoveis_app/widgets/cards/card_announcement_dashboard.dart';
+import 'package:imoveis_app/widgets/custom_dialog_filter.dart';
 import 'package:provider/provider.dart';
 
 class PropertiesPage extends StatefulWidget {
@@ -19,7 +20,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
   List<Announcement> announcements = [];
   bool isLoading = true;
 
-  loadValues() async {
+  loadValues(AnnouncementQuery? query) async {
     try {
       setState(() {
         isLoading = true;
@@ -46,7 +47,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
   @override
   void initState() {
     _controller = context.read<AuthenticationController>();
-    loadValues();
+    loadValues(null);
     super.initState();
   }
 
@@ -61,7 +62,17 @@ class _PropertiesPageState extends State<PropertiesPage> {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.tune_outlined))
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => CustomDialogFilter(
+                  onSelected: (query) => loadValues(query),
+                ),
+              );
+            },
+            icon: const Icon(Icons.tune_outlined),
+          ),
         ],
       ),
       body: isLoading
@@ -73,7 +84,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
               itemBuilder: (context, index) => CardAnnouncementDashboard(
                 announcement: announcements[index],
                 onPress: () async {
-                  await loadValues();
+                  await loadValues(null);
                 },
               ),
               itemCount: announcements.length,
@@ -89,7 +100,7 @@ class _PropertiesPageState extends State<PropertiesPage> {
               builder: (context) => const CreateAnnouncementPage(),
             ),
           );
-          await loadValues();
+          await loadValues(null);
         },
         child: const Icon(Icons.add_outlined),
       ),

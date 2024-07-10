@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:imoveis_app/app/announcement/update_announcement_page.dart';
 import 'package:imoveis_app/models/announcement.dart';
 import 'package:imoveis_app/widgets/buttons/button_primary.dart';
 
-class SuccessCreateAnnouncement extends StatefulWidget {
+class SuccessUpdateAnnouncement extends StatefulWidget {
   final Announcement announcement;
-  const SuccessCreateAnnouncement({super.key, required this.announcement});
+  const SuccessUpdateAnnouncement({super.key, required this.announcement});
 
   @override
-  State<SuccessCreateAnnouncement> createState() =>
-      _SuccessCreateAnnouncementState();
+  State<SuccessUpdateAnnouncement> createState() =>
+      _SuccessUpdateAnnouncementState();
 }
 
-class _SuccessCreateAnnouncementState extends State<SuccessCreateAnnouncement> {
+class _SuccessUpdateAnnouncementState extends State<SuccessUpdateAnnouncement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +35,7 @@ class _SuccessCreateAnnouncementState extends State<SuccessCreateAnnouncement> {
                 height: 24,
               ),
               const Text(
-                'Anúncio criado com sucesso.',
+                'Anúncio atualizado com sucesso.',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 textAlign: TextAlign.center,
               ),
@@ -51,13 +50,9 @@ class _SuccessCreateAnnouncementState extends State<SuccessCreateAnnouncement> {
                 height: 24,
               ),
               ButtonPrimary(
-                title: 'Visualizar anúncio',
-                onPressed: () => Navigator.pushReplacement(
+                title: 'Visualizar anúncios',
+                onPressed: () => Navigator.pop(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => UpdateAnnouncementPage(
-                        announcement: widget.announcement),
-                  ),
                 ),
               )
             ],

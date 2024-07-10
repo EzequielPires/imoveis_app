@@ -6,7 +6,9 @@ import 'package:imoveis_app/widgets/buttons/button_text.dart';
 class CardCustomFile extends StatelessWidget {
   final CustomFile customFile;
   final bool? full;
-  const CardCustomFile({super.key, required this.customFile, this.full});
+  final Function() onRemove;
+  const CardCustomFile(
+      {super.key, required this.customFile, this.full, required this.onRemove});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +28,12 @@ class CardCustomFile extends StatelessWidget {
                   fit: BoxFit.cover,
                 )
               : Image.network(
-                  width: (MediaQuery.of(context).size.width - 64) / 3,
-                  height: (MediaQuery.of(context).size.width - 64) / 3,
+                  width: full == true
+                      ? double.infinity
+                      : (MediaQuery.of(context).size.width - 64) / 3,
+                  height: full == true
+                      ? 228
+                      : (MediaQuery.of(context).size.width - 64) / 3,
                   fit: BoxFit.cover,
                   customFile.toString(),
                 ),
@@ -35,8 +41,7 @@ class CardCustomFile extends StatelessWidget {
         Positioned(
             top: 4,
             right: 4,
-            child: FloatingActionButton.small(
-              backgroundColor: Colors.red[50],
+            child: IconButton.filled(
               onPressed: () {
                 showDialog(
                   context: context,
@@ -45,7 +50,10 @@ class CardCustomFile extends StatelessWidget {
                     actions: [
                       ButtonPrimary(
                         title: 'Confirmar',
-                        onPressed: () {},
+                        onPressed: () {
+                          onRemove();
+                          Navigator.pop(context);
+                        },
                       ),
                       ButtonText(
                         title: 'Cancelar',
@@ -55,7 +63,15 @@ class CardCustomFile extends StatelessWidget {
                   ),
                 );
               },
-              child: const Icon(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(Colors.red[50]),
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              icon: const Icon(
                 Icons.delete_outline,
                 color: Colors.red,
               ),
