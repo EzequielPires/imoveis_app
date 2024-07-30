@@ -1,3 +1,4 @@
+import 'package:imoveis_app/models/announcement.dart';
 import 'package:imoveis_app/models/lead.dart';
 
 class Dashboard {
@@ -5,8 +6,9 @@ class Dashboard {
   List<PropertyByMonth> monthsSales;
   List<PropertyByMonth> monthsRents;
   List<Lead> leads;
+  List<Announcement>? announcements;
 
-  Dashboard({required this.monthsRents, required this.monthsSales, required this.types, required this.leads});
+  Dashboard({required this.monthsRents, required this.monthsSales, required this.types, required this.leads, this.announcements});
 
   factory Dashboard.fromJson(Map<String, dynamic> json) {
     return Dashboard(

@@ -4,8 +4,15 @@ import 'package:imoveis_app/controllers/menu_app_controller.dart';
 import 'package:imoveis_app/models/dashboard.dart';
 import 'package:imoveis_app/repositories/dashboard_repository.dart';
 import 'package:imoveis_app/widgets/aside_menu.dart';
+import 'package:imoveis_app/widgets/cards/card_lead.dart';
+import 'package:imoveis_app/widgets/dashboard_components/chart_adtype_results.dart';
+import 'package:imoveis_app/widgets/dashboard_components/chart_month_results.dart';
+import 'package:imoveis_app/widgets/dashboard_components/chart_type_results.dart';
+import 'package:imoveis_app/widgets/dashboard_components/last_announcements.dart';
+import 'package:imoveis_app/widgets/dashboard_components/last_leads.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -56,8 +63,9 @@ class _DashboardPageState extends State<DashboardPage> {
         var result = Dashboard(
           monthsRents: getLastSevenMonths(res.monthsRents).reversed.toList(),
           monthsSales: getLastSevenMonths(res.monthsSales).reversed.toList(),
-          types: [],
-          leads: [],
+          types: res.types,
+          leads: res.leads,
+          announcements: res.announcements,
         );
 
         setState(() {
@@ -157,166 +165,37 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Column(
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: Card(
-                    margin: EdgeInsets.zero,
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Captação de Imóveis',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          SizedBox(
-                            height: 200,
-                            child: dashboardResults != null
-                                ? LineChart(
-                                    LineChartData(
-                                      titlesData: FlTitlesData(
-                                          bottomTitles: AxisTitles(
-                                            sideTitles: SideTitles(
-                                              showTitles: true,
-                                              interval: 1,
-                                              getTitlesWidget:
-                                                  bottomTitleWidgets,
-                                            ),
-                                          ),
-                                          rightTitles: const AxisTitles(
-                                              sideTitles: SideTitles(
-                                                  showTitles: false)),
-                                          topTitles: const AxisTitles(
-                                              sideTitles: SideTitles(
-                                                  showTitles: false))),
-                                      lineBarsData: [
-                                        LineChartBarData(
-                                          spots: dashboardResults!.monthsRents
-                                              .asMap()
-                                              .entries
-                                              .map((e) => FlSpot(
-                                                    e.key.toDouble(),
-                                                    double.parse(e.value.count),
-                                                  ))
-                                              .toList(),
-                                          isCurved: false,
-                                          color: Colors.blueAccent,
-                                          barWidth: 2,
-                                          belowBarData:
-                                              BarAreaData(show: false),
-                                        ),
-                                        LineChartBarData(
-                                          spots: dashboardResults!.monthsSales
-                                              .asMap()
-                                              .entries
-                                              .map((e) => FlSpot(
-                                                    e.key.toDouble(),
-                                                    double.parse(e.value.count),
-                                                  ))
-                                              .toList(),
-                                          isCurved: false,
-                                          color: Colors.redAccent,
-                                          barWidth: 2,
-                                          belowBarData:
-                                              BarAreaData(show: false),
-                                        ),
-                                      ],
-                                    ),
-                                    duration: const Duration(milliseconds: 150),
-                                    curve: Curves.linear,
-                                  )
-                                : null,
-                          )
-                        ],
+                  child: Column(
+                    children: [
+                      ChartMonthResults(
+                        dashboardResults: dashboardResults,
                       ),
-                    ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      LastAnnouncements(dashboardResults: dashboardResults),
+                    ],
                   ),
                 ),
                 const SizedBox(
-                  width: 24,
+                  width: 16,
                 ),
                 Expanded(
-                  child: Card(
-                    margin: EdgeInsets.zero,
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Captação de Imóveis',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          SizedBox(
-                            height: 200,
-                            child: dashboardResults != null
-                                ? LineChart(
-                                    LineChartData(
-                                      titlesData: FlTitlesData(
-                                          bottomTitles: AxisTitles(
-                                            sideTitles: SideTitles(
-                                              showTitles: true,
-                                              interval: 1,
-                                              getTitlesWidget:
-                                                  bottomTitleWidgets,
-                                            ),
-                                          ),
-                                          rightTitles: const AxisTitles(
-                                              sideTitles: SideTitles(
-                                                  showTitles: false)),
-                                          topTitles: const AxisTitles(
-                                              sideTitles: SideTitles(
-                                                  showTitles: false))),
-                                      lineBarsData: [
-                                        LineChartBarData(
-                                          spots: dashboardResults!.monthsRents
-                                              .asMap()
-                                              .entries
-                                              .map((e) => FlSpot(
-                                                    e.key.toDouble(),
-                                                    double.parse(e.value.count),
-                                                  ))
-                                              .toList(),
-                                          isCurved: false,
-                                          color: Colors.blueAccent,
-                                          barWidth: 2,
-                                          belowBarData:
-                                              BarAreaData(show: false),
-                                        ),
-                                        LineChartBarData(
-                                          spots: dashboardResults!.monthsSales
-                                              .asMap()
-                                              .entries
-                                              .map((e) => FlSpot(
-                                                    e.key.toDouble(),
-                                                    double.parse(e.value.count),
-                                                  ))
-                                              .toList(),
-                                          isCurved: false,
-                                          color: Colors.redAccent,
-                                          barWidth: 2,
-                                          belowBarData:
-                                              BarAreaData(show: false),
-                                        ),
-                                      ],
-                                    ),
-                                    duration: const Duration(milliseconds: 150),
-                                    curve: Curves.linear,
-                                  )
-                                : null,
-                          )
-                        ],
+                  child: Column(
+                    children: [
+                      ChartTypeResults(dashboardResults: dashboardResults),
+                      const SizedBox(
+                        height: 16,
                       ),
-                    ),
+                      ChartAdTypeResults(dashboardResults: dashboardResults),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      LastLeads(dashboardResults: dashboardResults),
+                    ],
                   ),
                 ),
               ],
