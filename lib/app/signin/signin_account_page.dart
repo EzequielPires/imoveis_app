@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imoveis_app/app/home/home_page.dart';
 import 'package:imoveis_app/app/signup/signup_page.dart';
 import 'package:imoveis_app/controllers/authentication_controller.dart';
 import 'package:imoveis_app/widgets/buttons/button_primary.dart';
@@ -12,12 +13,39 @@ class SigninAccountPage extends StatefulWidget {
 }
 
 class _SigninAccountPageState extends State<SigninAccountPage> {
+  late AuthenticationController _controller;
   bool _obscureText = true;
 
   void _togglePasswordView() {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  @override
+  void initState() {
+    _controller = context.read<AuthenticationController>();
+    _controller.addListener(authListener);
+    super.initState();
+  }
+
+  authListener() {
+    AuthState state = _controller.state;
+    switch (state) {
+      case AuthState.idle:
+        break;
+      case AuthState.success:
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const HomePage(),
+            ));
+        break;
+      case AuthState.error:
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(_controller.errorMsg)));
+        break;
+    }
   }
 
   @override

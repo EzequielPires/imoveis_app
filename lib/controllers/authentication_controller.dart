@@ -79,7 +79,9 @@ class AuthenticationController extends ChangeNotifier {
   setUserAuth(Map<String, dynamic> json) async {
     final shared = await SharedPreferences.getInstance();
     user = User.fromJson(json['user']);
-    realEstate = RealEstate.fromJson(json['user']['realEstate']);
+    realEstate = json['user']['realEstate'] != null
+        ? RealEstate.fromJson(json['user']['realEstate'])
+        : null;
     accessToken = json['token'];
     await shared.setString('user', jsonEncode(json['user']));
     await shared.setString(
@@ -105,7 +107,7 @@ class AuthenticationController extends ChangeNotifier {
     final realEstateData = shared.getString('realEstate');
     final token = shared.getString('token');
 
-    if (realEstateData != null) {
+    if (realEstateData != null && realEstateData != 'null') {
       userData != null ? user = User.fromJson(json.decode(userData)) : null;
       realEstate = RealEstate.fromJson(json.decode(realEstateData));
       accessToken = token;

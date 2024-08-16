@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:imoveis_app/app/announcement/components/additional_section.dart';
 import 'package:imoveis_app/app/announcement/components/address_section.dart';
 import 'package:imoveis_app/app/announcement/components/description_section.dart';
 import 'package:imoveis_app/app/announcement/components/details_section.dart';
-import 'package:imoveis_app/app/announcement/components/gallery_section.dart';
 import 'package:imoveis_app/app/announcement/success_create_announcement.dart';
 import 'package:imoveis_app/factories/announcement_factory.dart';
 import 'package:imoveis_app/models/announcement.dart';

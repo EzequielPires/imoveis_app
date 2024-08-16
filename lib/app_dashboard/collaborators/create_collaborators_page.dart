@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:imoveis_app/factories/collaborator_factory.dart';
 import 'package:imoveis_app/helpers/mask.dart';
 import 'package:imoveis_app/widgets/buttons/button_primary.dart';
+import 'package:imoveis_app/widgets/form_components/custom_dropdown.dart';
+import 'package:imoveis_app/widgets/form_components/custom_text_field.dart';
 
 class CreateCollaboratorsPage extends StatefulWidget {
   const CreateCollaboratorsPage({super.key});
@@ -33,17 +35,10 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
             constraints: const BoxConstraints(maxWidth: 500),
             child: Column(
               children: [
-                TextFormField(
+                CustomTextField(
                   controller: _factory.name,
-                  decoration: const InputDecoration(
-                    alignLabelWithHint: true,
-                    label: Text('Nome'),
-                    hintText: 'Insira o nome completo',
-                    hintStyle: TextStyle(fontWeight: FontWeight.w300),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                  ),
+                  label: 'Nome',
+                  placeholder: 'Insira o nome completo',
                 ),
                 const SizedBox(
                   height: 16,
@@ -51,36 +46,22 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
                 Row(
                   children: [
                     Expanded(
-                      child: TextFormField(
+                      child: CustomTextField(
                         controller: _factory.phone,
+                        label: 'Telefone',
+                        placeholder: 'Insira o telefone pra contato',
                         inputFormatters: [phoneFormatter],
-                        decoration: const InputDecoration(
-                          alignLabelWithHint: true,
-                          label: Text('Telefone'),
-                          hintText: 'Insira o telefone pra contato',
-                          hintStyle: TextStyle(fontWeight: FontWeight.w300),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                          ),
-                        ),
                       ),
                     ),
                     const SizedBox(
                       width: 8,
                     ),
                     Expanded(
-                      child: TextFormField(
+                      child: CustomTextField(
                         controller: _factory.cpf,
+                        label: 'CPF',
+                        placeholder: 'Insira o CPF',
                         inputFormatters: [cpfFormatter],
-                        decoration: const InputDecoration(
-                          alignLabelWithHint: true,
-                          label: Text('CPF'),
-                          hintText: 'Insira o CPF',
-                          hintStyle: TextStyle(fontWeight: FontWeight.w300),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                          ),
-                        ),
                       ),
                     ),
                   ],
@@ -88,47 +69,34 @@ class _CreateCollaboratorsPageState extends State<CreateCollaboratorsPage> {
                 const SizedBox(
                   height: 16,
                 ),
-                TextFormField(
+                CustomTextField(
                   controller: _factory.email,
-                  decoration: const InputDecoration(
-                    alignLabelWithHint: true,
-                    label: Text('Email'),
-                    hintText: 'Insira o email',
-                    hintStyle: TextStyle(fontWeight: FontWeight.w300),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                  ),
+                  label: 'Email',
+                  placeholder: 'Insira o email',
                 ),
                 const SizedBox(
                   height: 16,
                 ),
-                TextFormField(
+                CustomTextField(
                   controller: _factory.password,
+                  label: 'Senha',
+                  placeholder: 'Insira a senha',
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    alignLabelWithHint: true,
-                    label: Text('Senha'),
-                    hintText: 'Insira a senha',
-                    hintStyle: TextStyle(fontWeight: FontWeight.w300),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                  ),
                 ),
                 const SizedBox(
                   height: 16,
                 ),
-                DropdownMenu(
-                  expandedInsets: const EdgeInsets.all(0),
-                  label: const Text('Tipo do colaborador'),
-                  onSelected: (value) => setState(() {
-                    _factory.type = value;
-                  }),
+                CustomDropdown(
+                  controller: _factory.typeController,
+                  label: 'Tipo do colaborador',
+                  placeholder: 'Selecione um tipo',
                   dropdownMenuEntries: const [
                     DropdownMenuEntry(value: 1, label: 'Corretor'),
                     DropdownMenuEntry(value: 2, label: 'Administrador'),
                   ],
+                  onSelected: (value) => setState(() {
+                    _factory.type = value;
+                  }),
                 ),
                 const SizedBox(
                   height: 16,

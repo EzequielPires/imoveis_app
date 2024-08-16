@@ -40,11 +40,13 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-          cardTheme: const CardTheme(
-              surfaceTintColor: Colors.white, color: Colors.white),
-          useMaterial3: true,
-          scaffoldBackgroundColor: Colors.grey.shade100),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        cardTheme: const CardTheme(
+            surfaceTintColor: Colors.white, color: Colors.white),
+        useMaterial3: true,
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        progressIndicatorTheme: const ProgressIndicatorThemeData(color: Colors.white),
+      ),
       home: const SplashPage(),
     );
   }

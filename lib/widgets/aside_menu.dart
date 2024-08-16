@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:imoveis_app/app/signin/signin_page.dart';
 import 'package:imoveis_app/app_dashboard/collaborators/collaborators_page.dart';
-import 'package:imoveis_app/app_dashboard/contacts/contacts_page.dart';
 import 'package:imoveis_app/app_dashboard/leads/leads_page.dart';
 import 'package:imoveis_app/app_dashboard/properties/properties_page.dart';
 import 'package:imoveis_app/app_dashboard/reports/reports_page.dart';
@@ -55,7 +54,7 @@ class _AsideMenuState extends State<AsideMenu> {
               ),
             ),
           ),
-          ListTile(
+          /* ListTile(
             title: const Text("Contatos"),
             leading: const Icon(Icons.person_2_outlined),
             onTap: () => Navigator.push(
@@ -64,7 +63,7 @@ class _AsideMenuState extends State<AsideMenu> {
                 builder: (context) => const ContactsPage(),
               ),
             ),
-          ),
+          ), */
           ListTile(
             title: const Text("Relatórios"),
             leading: const Icon(Icons.bar_chart_outlined),

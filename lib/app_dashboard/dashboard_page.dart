@@ -1,10 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:imoveis_app/app_dashboard/account/account_page.dart';
 import 'package:imoveis_app/controllers/menu_app_controller.dart';
 import 'package:imoveis_app/models/dashboard.dart';
 import 'package:imoveis_app/repositories/dashboard_repository.dart';
 import 'package:imoveis_app/widgets/aside_menu.dart';
-import 'package:imoveis_app/widgets/cards/card_lead.dart';
 import 'package:imoveis_app/widgets/dashboard_components/chart_adtype_results.dart';
 import 'package:imoveis_app/widgets/dashboard_components/chart_month_results.dart';
 import 'package:imoveis_app/widgets/dashboard_components/chart_type_results.dart';
@@ -12,7 +12,6 @@ import 'package:imoveis_app/widgets/dashboard_components/last_announcements.dart
 import 'package:imoveis_app/widgets/dashboard_components/last_leads.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -156,53 +155,36 @@ class _DashboardPageState extends State<DashboardPage> {
               onPressed: () {},
               icon: IconButton(
                 icon: const Icon(Icons.person_outline),
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AccountPage(),
+                    )),
               ),
             ),
           ]),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      ChartMonthResults(
-                        dashboardResults: dashboardResults,
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      LastAnnouncements(dashboardResults: dashboardResults),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      ChartTypeResults(dashboardResults: dashboardResults),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      ChartAdTypeResults(dashboardResults: dashboardResults),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      LastLeads(dashboardResults: dashboardResults),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              ChartMonthResults(
+                dashboardResults: dashboardResults,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              LastAnnouncements(dashboardResults: dashboardResults),
+              ChartTypeResults(dashboardResults: dashboardResults),
+              const SizedBox(
+                height: 16,
+              ),
+              ChartAdTypeResults(dashboardResults: dashboardResults),
+              const SizedBox(
+                height: 16,
+              ),
+              LastLeads(dashboardResults: dashboardResults),
+            ],
+          )),
     );
   }
 }

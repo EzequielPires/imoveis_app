@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:imoveis_app/app/onboarding/onboarding_page.dart';
 import 'package:imoveis_app/app/signup/signup_page.dart';
 import 'package:imoveis_app/app_dashboard/dashboard_page.dart';
 import 'package:imoveis_app/controllers/authentication_controller.dart';
