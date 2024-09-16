@@ -174,6 +174,9 @@ class _DashboardPageState extends State<DashboardPage> {
                 height: 16,
               ),
               LastAnnouncements(dashboardResults: dashboardResults),
+              const SizedBox(
+                height: 16,
+              ),
               ChartTypeResults(dashboardResults: dashboardResults),
               const SizedBox(
                 height: 16,
