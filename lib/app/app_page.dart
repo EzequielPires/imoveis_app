@@ -18,7 +18,7 @@ class _AppPageState extends State<AppPage> {
   List<Widget> pages = [
     const HomePage(),
     const SearchPage(),
-    const FavoritesPage(),
+    //const FavoritesPage(),
     const AnnouncePage(),
     const ProfilePage()
   ];
@@ -41,27 +41,39 @@ class _AppPageState extends State<AppPage> {
         shadowColor: Colors.black54,
         destinations: const [
           NavigationDestination(
-            selectedIcon: Icon(Icons.home, color: Colors.white,),
+            selectedIcon: Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
             icon: Icon(Icons.home_outlined),
             label: 'Início',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.search, color: Colors.white,),
+            selectedIcon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
             icon: Icon(Icons.search_outlined),
             label: 'Busca',
           ),
-          NavigationDestination(
+          /* NavigationDestination(
             selectedIcon: Icon(Icons.favorite, color: Colors.white,),
             icon: Icon(Icons.favorite_outline),
             label: 'Favoritos',
-          ),
+          ), */
           NavigationDestination(
-            selectedIcon: Icon(Icons.edit, color: Colors.white,),
+            selectedIcon: Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
             icon: Icon(Icons.edit_outlined),
             label: 'Anuncie',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.person, color: Colors.white,),
+            selectedIcon: Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
             icon: Icon(Icons.person_outline),
             label: 'Conta',
           ),
